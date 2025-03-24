@@ -23,6 +23,7 @@
         <div class="navigation">
             <button onclick="previousPage()">&#8592; Vorherige Seite</button>
             <button onclick="nextPage()">Nächste Seite &#8594;</button>
+            <span id="pageIndicator">Seite 1 / 66</span>
             <select id="personFilter" onchange="filterByPerson()">
                 <option value="all">Alle</option>
                 <option value="Karl">Karl</option>
@@ -46,7 +47,7 @@
 
 <script>
     const allPages = [
-"Karl/0001_Karl 01.08.43 Umschlag","Karl/0002_Karl 01.08.43","Karl/0003_Karl 02.02.44 Umschlag","Karl/0004_Karl 02.02.44","Karl/0005_Karl 04.06.43 Umschlag","Karl/0006_Karl 04.06.43","Karl/0007_Karl 04.09.43 Umschlag","Karl/0008_Karl 04.09.43","Karl/0009_Karl 05.04.42 Seite 2","Karl/0010_Karl 05.04.42","Karl/0011_Karl 05.07.43 Rueckseite","Karl/0012_Karl 05.07.43","Karl/0013_Karl 06.09.43 Umschlag","Karl/0014_Karl 06.09.43","Karl/0015_Karl 07.08.43 Umschlag","Karl/0016_Karl 07.08.43","Karl/0017_Karl 10.05.44 Seite 2","Karl/0018_Karl 10.05.44","Karl/0019_Karl 11.09.43 Umschlag","Karl/0020_Karl 11.09.43","Karl/0021_Karl 13.06.43 Umschlag","Karl/0022_Karl 13.06.43","Karl/0023_Karl 13.08.43 Umschlag","Karl/0024_Karl 13.08.43","Karl/0025_Karl 15.04.43 Seite 2","Karl/0026_Karl 15.04.43","Karl/0027_Karl 16.12.43 Seite 2","Karl/0028_Karl 16.12.43","Karl/0029_Karl 17.09.43 Umschlag","Karl/0030_Karl 17.09.43","Karl/0031_Karl 18.04.43 Umschlag","Karl/0032_Karl 18.04.43","Karl/0033_Karl 19.07.43 Umschlag","Karl/0034_Karl 19.07.43","Karl/0035_Karl 19.12.43 Seite 2","Karl/0036_Karl 19.12.43","Karl/0037_Karl 20.09.43 Umschlag","Karl/0038_Karl 20.09.43","Karl/0039_Karl 21.08.43 Seite 2","Karl/0040_Karl 21.08.43","Karl/0041_Karl 23.04.43 Umschlag","Karl/0042_Karl 23.04.43","Karl/0043_Karl 24.02.44 Seite 2","Karl/0044_Karl 24.02.44","Karl/0045_Karl 25.04.43 Umschlag","Karl/0046_Karl 25.04.43","Karl/0047_Karl 25.07.44 Umschlag","Karl/0048_Karl 25.07.44","Karl/0049_Karl 28.07.43","Karl/0050_Karl 29.05.44","Karl/0051_Karl","Paul/0052_Paul 03.12.15 Seite 2","Paul/0053_Paul 03.12.15","Paul/0054_Paul 10.12.15 Seite 2","Paul/0055_Paul 10.12.15","Paul/0056_Paul 19.10.15 Seite 2","Paul/0057_Paul 19.10.15","Paul/0058_Paul 31.08.15 Seite 2","Paul/0059_Paul 31.08.15","Peter/0060_Peter 12.09.41","Peter/0061_Peter 13.11.41 Seite 2","Peter/0062_Peter 13.11.41","Peter/0063_Peter 20.12.43","Peter/0064_Peter 23.11.41 Seite 2","Peter/0065_Peter 23.11.41","Peter/0066_Peter 26.02.44"
+        "Karl/0001_Karl 01.08.43 Umschlag", "Karl/0002_Karl 01.08.43", "Karl/0003_Karl 02.02.44 Umschlag", "Karl/0004_Karl 02.02.44", "Karl/0005_Karl 04.06.43 Umschlag", "Karl/0006_Karl 04.06.43", "Karl/0007_Karl 04.09.43 Umschlag", "Karl/0008_Karl 04.09.43", "Karl/0009_Karl 05.04.42 Seite 2", "Karl/0010_Karl 05.04.42", "Karl/0011_Karl 05.07.43 Rueckseite", "Karl/0012_Karl 05.07.43", "Karl/0013_Karl 06.09.43 Umschlag", "Karl/0014_Karl 06.09.43", "Karl/0015_Karl 07.08.43 Umschlag", "Karl/0016_Karl 07.08.43", "Karl/0017_Karl 10.05.44 Seite 2", "Karl/0018_Karl 10.05.44", "Karl/0019_Karl 11.09.43 Umschlag", "Karl/0020_Karl 11.09.43", "Karl/0021_Karl 13.06.43 Umschlag", "Karl/0022_Karl 13.06.43", "Karl/0023_Karl 13.08.43 Umschlag", "Karl/0024_Karl 13.08.43", "Karl/0025_Karl 15.04.43 Seite 2", "Karl/0026_Karl 15.04.43", "Karl/0027_Karl 16.12.43 Seite 2", "Karl/0028_Karl 16.12.43", "Karl/0029_Karl 17.09.43 Umschlag", "Karl/0030_Karl 17.09.43", "Karl/0031_Karl 18.04.43 Umschlag", "Karl/0032_Karl 18.04.43", "Karl/0033_Karl 19.07.43 Umschlag", "Karl/0034_Karl 19.07.43", "Karl/0035_Karl 19.12.43 Seite 2", "Karl/0036_Karl 19.12.43", "Karl/0037_Karl 20.09.43 Umschlag", "Karl/0038_Karl 20.09.43", "Karl/0039_Karl 21.08.43 Seite 2", "Karl/0040_Karl 21.08.43", "Karl/0041_Karl 23.04.43 Umschlag", "Karl/0042_Karl 23.04.43", "Karl/0043_Karl 24.02.44 Seite 2", "Karl/0044_Karl 24.02.44", "Karl/0045_Karl 25.04.43 Umschlag", "Karl/0046_Karl 25.04.43", "Karl/0047_Karl 25.07.44 Umschlag", "Karl/0048_Karl 25.07.44", "Karl/0049_Karl 28.07.43", "Karl/0050_Karl 29.05.44", "Karl/0051_Karl", "Paul/0052_Paul 03.12.15 Seite 2", "Paul/0053_Paul 03.12.15", "Paul/0054_Paul 10.12.15 Seite 2", "Paul/0055_Paul 10.12.15", "Paul/0056_Paul 19.10.15 Seite 2", "Paul/0057_Paul 19.10.15", "Paul/0058_Paul 31.08.15 Seite 2", "Paul/0059_Paul 31.08.15", "Peter/0060_Peter 12.09.41", "Peter/0061_Peter 13.11.41 Seite 2", "Peter/0062_Peter 13.11.41", "Peter/0063_Peter 20.12.43", "Peter/0064_Peter 23.11.41 Seite 2", "Peter/0065_Peter 23.11.41", "Peter/0066_Peter 26.02.44"
     ];
 
     let pages = [...allPages];
@@ -56,11 +57,12 @@
         if (index < 0 || index >= pages.length) return;
         currentIndex = index;
         const base = pages[currentIndex];
-        document.getElementById('pageImage').src = `${base}.jpg`;
-        fetch(`${base}.html`)
+        document.getElementById('pageImage').src = `Post/${base}.jpg`;
+        fetch(`Post/${base}.html`)
             .then(response => response.text())
             .then(data => document.getElementById('textContent').innerHTML = data)
             .catch(err => document.getElementById('textContent').innerHTML = `<p>Fehler beim Laden der Datei: ${base}.html</p>`);
+        document.getElementById('pageIndicator').textContent = `Seite ${currentIndex + 1} / ${pages.length}`;
     }
 
     function nextPage() {
@@ -83,6 +85,7 @@
 
 </body>
 </html>
+
 
 
 
