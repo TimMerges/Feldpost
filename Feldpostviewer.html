@@ -57,7 +57,7 @@
         if (index < 0 || index >= pages.length) return;
         currentIndex = index;
         const base = pages[currentIndex];
-        document.getElementById('pageImage').src = `${base}.jpg`;
+document.getElementById('pageImage').src = `${base}.jpeg`;        
         fetch(`${base}.html`)
             .then(response => response.text())
             .then(data => document.getElementById('textContent').innerHTML = data)
