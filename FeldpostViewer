@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feldpost</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/transcriptions.css">
+
+</head>
+<body>
+
+    <!-- Hauptnavigation -->
+    <header class="main-header">
+        <nav>
+            <ul>
+           
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Inhalt -->
+    <main class="transcription-container">
+        <section class="edition-navigation">
+            <div class="navigation">
+                <button onclick="previousPage()">&#8592; Vorherige Seite</button>
+                <button onclick="nextPage()">Nächste Seite &#8594;</button>
+                <a id="teiLink" href="#" target="_blank" class="tei-button">TEI-XML in neuem Tab anzeigen</a>   
+            </div>
+        </section>
+
+        <div class="back-to-overview">
+        <a href="../transcriptions.html">← Zurück zur Transkriptionsübersicht</a>
+        </div>
+
+        <!-- Bild- und Textanzeige nebeneinander -->
+        <section class="synoptic-view">
+            <div class="facsimile-column">
+                <img id="pageImage" src="" alt="Seite">
+            </div>
+            <div class="transcription-column">
+                <div class="transcription-text" id="textContent">
+                    <!-- Text wird hier dynamisch geladen -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="fixed-footer">
+    </footer>
+
+    <script>
+        let currentIndex = 0;
+        const pages = [
+            { base: '0001_p017' }, { base: '0002_p018' }, { base: '0003_p019' },
+            { base: '0004_p020' }, { base: '0005_p021' }, { base: '0006_p022' },
+            { base: '0007_p023' }, { base: '0008_p024' }, { base: '0009_p025' },
+            { base: '0010_p026' }, { base: '0011_p027' }, { base: '0012_p028' },
+            { base: '0013_p029' }, { base: '0014_p030' }, { base: '0015_p031' },
+            { base: '0016_p032' }, { base: '0017_p033' }, { base: '0018_p034' },
+            { base: '0019_p035' }, { base: '0020_p036' }, { base: '0021_p037' },
+            { base: '0022_p038' }, { base: '0023_p039' }, { base: '0024_p040' },
+            { base: '0025_p041' }, { base: '0026_p042' }, { base: '0027_p043' },
+            { base: '0028_p044' }, { base: '0029_p045' },
+            { base: '0030_p003' }, { base: '0031_p004' }, { base: '0032_p005' },
+            { base: '0033_p006' }, { base: '0034_p007' }, { base: '0035_p008' },
+            { base: '0036_p009' }, { base: '0037_p010' }, { base: '0038_p011' },
+            { base: '0039_p012' }, { base: '0040_p013' }, { base: '0041_p014' }
+        ];
+
+        function loadPage(index) {
+            if (index < 0 || index >= pages.length) return;
+            currentIndex = index;
+            const page = pages[currentIndex];
+            document.getElementById('pageImage').src = `${page.base}.jpg`;
+            fetch(`${page.base}.html`)
+                .then(response => response.text())
+                .then(data => document.getElementById('textContent').innerHTML = data)
+                .catch(err => document.getElementById('textContent').innerHTML = `<p>Fehler beim Laden: ${err.message}</p>`);
+            document.getElementById('teiLink').href = `${page.base}.tei.xml`;
+            window.location.hash = currentIndex;
+        }
+
+        function nextPage() {
+            if (currentIndex < pages.length - 1) {
+                loadPage(currentIndex + 1);
+            }
+        }
+
+        function previousPage() {
+            if (currentIndex > 0) {
+                loadPage(currentIndex - 1);
+            }
+        }
+
+        function loadInitialPage() {
+            const hashIndex = parseInt(window.location.hash.substring(1));
+            if (!isNaN(hashIndex) && hashIndex >= 0 && hashIndex < pages.length) {
+                currentIndex = hashIndex;
+            }
+            loadPage(currentIndex);
+        }
+
+        window.onload = loadInitialPage;
+    </script>
+
+</body>
+</html>
