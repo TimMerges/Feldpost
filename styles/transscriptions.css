@@ -24,7 +24,7 @@
 
 /* Bild-Spalte */
 .facsimile-column {
-    flex: 1; /* Bild nimmt max. 50% ein */
+    flex: 1;
     max-width: 45%;
 }
 
@@ -32,23 +32,26 @@
     width: 100%;
     height: auto;
     border-radius: 5px;
+    border: 1px solid #ddd;
 }
 
 /* Transkription-Spalte */
 .transcription-column {
-    flex: 1; /* Nimmt ebenfalls max. 50% ein */
+    flex: 1;
     max-width: 50%;
-}
-
-.transcription-text {
+    background-color: #fefefe;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: #fefefe;
+    overflow-y: auto; /* Falls langer Text, Scrollbar */
+    max-height: 80vh; /* Maximale Höhe für bessere Lesbarkeit */
+}
+
+.transcription-text {
     font-family: "Courier New", Courier, monospace;
     white-space: pre-line;
     line-height: 1.8;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: #222;
 }
 
@@ -74,40 +77,27 @@
     background-color: #4a6e5f;
 }
 
-/* Responsive Anpassungen */
+/* Dropdown für Personenauswahl */
+#personFilter {
+    padding: 5px 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Responsive Anpassungen für mobile Geräte */
 @media (max-width: 768px) {
     .synoptic-view {
-        flex-direction: column; /* Mobil: untereinander */
+        flex-direction: column; /* Mobil: Bild und Text untereinander */
         align-items: center;
     }
 
     .facsimile-column, .transcription-column {
-        width: 90%;
         max-width: 90%;
+        width: 90%;
     }
 }
 
-
-    .facsimile-column, .transcription-column {
-        width: 100%;
-    }
-}
-
-/* Styling für "Zurück zur Transkriptionsübersicht" Link */
-.back-to-overview {
-    margin-bottom: 15px; /* Abstand unterhalb des Links */
-    text-align: left; /* Link links ausrichten */
-}
-
-.back-to-overview a {
-    display: inline-block; /* Verhindert vollen Container-Breite */
-    padding: 8px 12px;
-    background-color: #f0f0f0; /* Dezenter Hintergrund */
-    color: #333; /* Dunkelgraue Textfarbe */
-    border-radius: 5px;
-    text-decoration: none; /* Unterstreichung entfernen */
-    font-size: 0.9rem;
-}
 
 .back-to-overview a:hover {
     background-color: #e0e0e0; /* Etwas dunklerer Hover-Hintergrund */
