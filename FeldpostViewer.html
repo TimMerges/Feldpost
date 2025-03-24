@@ -3,109 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feldpost</title>
+    <title>Feldpost Viewer</title>
 
     <link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/transcriptions.css">
-
+    <link rel="stylesheet" href="../css/transcriptions.css">
 </head>
 <body>
 
-    <!-- Hauptnavigation -->
-    <header class="main-header">
-        <nav>
-            <ul>
-           
-            </ul>
-        </nav>
-    </header>
+<header class="main-header">
+    <nav>
+        <ul>
+            <li><a href="../transcriptions.html">Zurück zur Übersicht</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <!-- Inhalt -->
-    <main class="transcription-container">
-        <section class="edition-navigation">
-            <div class="navigation">
-                <button onclick="previousPage()">&#8592; Vorherige Seite</button>
-                <button onclick="nextPage()">Nächste Seite &#8594;</button>
-                <a id="teiLink" href="#" target="_blank" class="tei-button">TEI-XML in neuem Tab anzeigen</a>   
-            </div>
-        </section>
-
-        <div class="back-to-overview">
-        <a href="../transcriptions.html">← Zurück zur Transkriptionsübersicht</a>
+<main class="transcription-container">
+    <section class="edition-navigation">
+        <div class="navigation">
+            <button onclick="previousPage()">&#8592; Vorherige Seite</button>
+            <button onclick="nextPage()">Nächste Seite &#8594;</button>
+            <select id="personFilter" onchange="filterByPerson()">
+                <option value="all">Alle</option>
+                <option value="Karl">Karl</option>
+                <option value="Paul">Paul</option>
+                <option value="Peter">Peter</option>
+            </select>
         </div>
+    </section>
 
-        <!-- Bild- und Textanzeige nebeneinander -->
-        <section class="synoptic-view">
-            <div class="facsimile-column">
-                <img id="pageImage" src="" alt="Seite">
-            </div>
-            <div class="transcription-column">
-                <div class="transcription-text" id="textContent">
-                    <!-- Text wird hier dynamisch geladen -->
-                </div>
-            </div>
-        </section>
+    <section class="synoptic-view">
+        <div class="facsimile-column">
+            <img id="pageImage" src="" alt="Seite">
+        </div>
+        <div class="transcription-column">
+            <div id="textContent"></div>
+        </div>
+    </section>
+</main>
 
-    </main>
+<footer class="fixed-footer"></footer>
 
-    <!-- Footer -->
-    <footer class="fixed-footer">
-    </footer>
+<script>
+    const allPages = [
+"0001_Karl 01.08.43 Umschlag",
+"0002_Karl 01.08.43",
+"0003_Karl 02.02.44 Umschlag",
+"0004_Karl 02.02.44",
+"0005_Karl 04.06.43 Umschlag",
+"0006_Karl 04.06.43",
+"0007_Karl 04.09.43 Umschlag",
+"0008_Karl 04.09.43",
+"0009_Karl 05.04.42 Seite 2",
+"0010_Karl 05.04.42",
+"0011_Karl 05.07.43 Rueckseite",
+"0012_Karl 05.07.43",
+"0013_Karl 06.09.43 Umschlag",
+"0014_Karl 06.09.43",
+"0015_Karl 07.08.43 Umschlag",
+"0016_Karl 07.08.43",
+"0017_Karl 10.05.44 Seite 2",
+"0018_Karl 10.05.44",
+"0019_Karl 11.09.43 Umschlag",
+"0020_Karl 11.09.43",
+"0021_Karl 13.06.43 Umschlag",
+"0022_Karl 13.06.43",
+"0023_Karl 13.08.43 Umschlag",
+"0024_Karl 13.08.43",
+"0025_Karl 15.04.43 Seite 2",
+"0026_Karl 15.04.43",
+"0027_Karl 16.12.43 Seite 2",
+"0028_Karl 16.12.43",
+"0029_Karl 17.09.43 Umschlag",
+"0030_Karl 17.09.43",
+"0031_Karl 18.04.43 Umschlag",
+"0032_Karl 18.04.43",
+"0033_Karl 19.07.43 Umschlag",
+"0034_Karl 19.07.43",
+"0035_Karl 19.12.43 Seite 2",
+"0036_Karl 19.12.43",
+"0037_Karl 20.09.43 Umschlag",
+"0038_Karl 20.09.43",
+"0039_Karl 21.08.43 Seite 2",
+"0040_Karl 21.08.43",
+"0041_Karl 23.04.43 Umschlag",
+"0042_Karl 23.04.43",
+"0043_Karl 24.02.44 Seite 2",
+"0044_Karl 24.02.44",
+"0045_Karl 25.04.43 Umschlag",
+"0046_Karl 25.04.43",
+"0047_Karl 25.07.44 Umschlag",
+"0048_Karl 25.07.44",
+"0049_Karl 28.07.43",
+"0050_Karl 29.05.44",
+"0051_Karl",
+"0052_Paul 03.12.15 Seite 2",
+"0053_Paul 03.12.15",
+"0054_Paul 10.12.15 Seite 2",
+"0055_Paul 10.12.15",
+"0056_Paul 19.10.15 Seite 2",
+"0057_Paul 19.10.15",
+"0058_Paul 31.08.15 Seite 2",
+"0059_Paul 31.08.15",
+"0060_Peter 12.09.41",
+"0061_Peter 13.11.41 Seite 2",
+"0062_Peter 13.11.41",
+"0063_Peter 20.12.43",
+"0064_Peter 23.11.41 Seite 2",
+"0065_Peter 23.11.41",
+"0066_Peter 26.02.44"
+    ];
 
-    <script>
-        let currentIndex = 0;
-        const pages = [
-            { base: '0001_p017' }, { base: '0002_p018' }, { base: '0003_p019' },
-            { base: '0004_p020' }, { base: '0005_p021' }, { base: '0006_p022' },
-            { base: '0007_p023' }, { base: '0008_p024' }, { base: '0009_p025' },
-            { base: '0010_p026' }, { base: '0011_p027' }, { base: '0012_p028' },
-            { base: '0013_p029' }, { base: '0014_p030' }, { base: '0015_p031' },
-            { base: '0016_p032' }, { base: '0017_p033' }, { base: '0018_p034' },
-            { base: '0019_p035' }, { base: '0020_p036' }, { base: '0021_p037' },
-            { base: '0022_p038' }, { base: '0023_p039' }, { base: '0024_p040' },
-            { base: '0025_p041' }, { base: '0026_p042' }, { base: '0027_p043' },
-            { base: '0028_p044' }, { base: '0029_p045' },
-            { base: '0030_p003' }, { base: '0031_p004' }, { base: '0032_p005' },
-            { base: '0033_p006' }, { base: '0034_p007' }, { base: '0035_p008' },
-            { base: '0036_p009' }, { base: '0037_p010' }, { base: '0038_p011' },
-            { base: '0039_p012' }, { base: '0040_p013' }, { base: '0041_p014' }
-        ];
+    let pages = [...allPages];
+    let currentIndex = 0;
 
-        function loadPage(index) {
-            if (index < 0 || index >= pages.length) return;
-            currentIndex = index;
-            const page = pages[currentIndex];
-            document.getElementById('pageImage').src = `${page.base}.jpg`;
-            fetch(`${page.base}.html`)
-                .then(response => response.text())
-                .then(data => document.getElementById('textContent').innerHTML = data)
-                .catch(err => document.getElementById('textContent').innerHTML = `<p>Fehler beim Laden: ${err.message}</p>`);
-            document.getElementById('teiLink').href = `${page.base}.tei.xml`;
-            window.location.hash = currentIndex;
-        }
+    function loadPage(index) {
+        if (index < 0 || index >= pages.length) return;
+        currentIndex = index;
+        const base = pages[currentIndex];
+        document.getElementById('pageImage').src = `${base}.jpg`;
+        fetch(`${base}.html`)
+            .then(response => response.text())
+            .then(data => document.getElementById('textContent').innerHTML = data)
+            .catch(err => document.getElementById('textContent').innerHTML = `<p>Fehler beim Laden: ${err.message}</p>`);
+    }
 
-        function nextPage() {
-            if (currentIndex < pages.length - 1) {
-                loadPage(currentIndex + 1);
-            }
-        }
+    function nextPage() {
+        if (currentIndex < pages.length - 1) loadPage(currentIndex + 1);
+    }
 
-        function previousPage() {
-            if (currentIndex > 0) {
-                loadPage(currentIndex - 1);
-            }
-        }
+    function previousPage() {
+        if (currentIndex > 0) loadPage(currentIndex - 1);
+    }
 
-        function loadInitialPage() {
-            const hashIndex = parseInt(window.location.hash.substring(1));
-            if (!isNaN(hashIndex) && hashIndex >= 0 && hashIndex < pages.length) {
-                currentIndex = hashIndex;
-            }
-            loadPage(currentIndex);
-        }
+    function filterByPerson() {
+        const person = document.getElementById('personFilter').value;
+        pages = person === 'all' ? [...allPages] : allPages.filter(p => p.includes(person));
+        currentIndex = 0;
+        loadPage(currentIndex);
+    }
 
-        window.onload = loadInitialPage;
-    </script>
+    window.onload = () => loadPage(0);
+</script>
 
 </body>
 </html>
